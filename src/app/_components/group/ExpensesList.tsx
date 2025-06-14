@@ -2,16 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  Receipt,
-  CheckCircle2,
-  MoreVertical,
-  CheckCircle,
-  Loader2,
-  Trash2,
-  XCircle,
-  Plus,
-} from "lucide-react";
+import { Receipt, MoreVertical, Loader2, Trash2, Plus } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
 import { Badge } from "~/components/ui/badge";
@@ -35,7 +26,6 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { ExpenseForm } from "~/app/_components/ExpenseForm";
-import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
 
 type Group = RouterOutputs["group"]["getById"];
 
@@ -53,7 +43,6 @@ export function ExpensesList({
   onExpenseUnsettled,
 }: ExpensesListProps) {
   const [expenseToDelete, setExpenseToDelete] = useState<string | null>(null);
-  const [settlingExpense, setSettlingExpense] = useState<string | null>(null);
   const [isAddingExpense, setIsAddingExpense] = useState(false);
   const utils = api.useUtils();
 
@@ -85,45 +74,10 @@ export function ExpensesList({
     },
   });
 
-  const settleUpExpense = api.expense.settleUp.useMutation({
-    onMutate: () => {
-      if (!group) return;
-      toast.loading("Settling expense...", {
-        id: "settle-expense",
-      });
-    },
-    onSuccess: async () => {
-      if (!group) return;
-      await utils.group.getById.invalidate();
-      await utils.expense.getBalances.invalidate(group.id);
-      toast.success("Expense settled successfully", {
-        id: "settle-expense",
-        style: {
-          backgroundColor: "#dcfce7",
-          color: "#166534",
-          borderColor: "#bbf7d0",
-        },
-      });
-      onExpenseSettled();
-      setSettlingExpense(null);
-    },
-    onError: () => {
-      toast.error("Failed to settle expense", {
-        id: "settle-expense",
-      });
-      setSettlingExpense(null);
-    },
-  });
-
   const handleDelete = () => {
     if (expenseToDelete) {
       deleteExpense.mutate(expenseToDelete);
     }
-  };
-
-  const handleSettleUp = (id: string) => {
-    setSettlingExpense(id);
-    settleUpExpense.mutate(id);
   };
 
   const handleExpenseCreated = async () => {
@@ -192,12 +146,6 @@ export function ExpensesList({
                         <h3 className="text-lg font-semibold text-gray-900 transition-colors group-hover:text-blue-700 dark:text-gray-100 dark:group-hover:text-blue-400">
                           {expense.description}
                         </h3>
-                        {expense.settled && (
-                          <Badge className="border-green-200 bg-green-100 text-green-700 dark:border-green-800 dark:bg-green-900/50 dark:text-green-400">
-                            <CheckCircle2 className="mr-1 h-3 w-3" />
-                            Settled
-                          </Badge>
-                        )}
                       </div>
                       <div className="flex flex-wrap items-center gap-2">
                         <Badge
@@ -208,12 +156,12 @@ export function ExpensesList({
                         </Badge>
                       </div>
                     </div>
-                    <div className="space-y-1 text-right">
-                      <p className="text-2xl font-bold text-gray-900 transition-colors group-hover:text-green-600 dark:text-gray-100 dark:group-hover:text-green-400">
+                    <div className="space-y-1 ">
+                      <p className="text-2xl text-right font-bold text-gray-900 transition-colors group-hover:text-green-600 dark:text-gray-100 dark:group-hover:text-green-400">
                         ₹{expense.amount.toFixed(2)}
                       </p>
-                      <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
-                        <span>Split {expense.shares.length} ways</span>
+                      <div className="flex items-center text-end gap-1 text-sm text-gray-600 dark:text-gray-400">
+                        <span >Split {expense.shares.length} ways</span>
                       </div>
                     </div>
                   </div>
@@ -228,25 +176,6 @@ export function ExpensesList({
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      {!expense.settled && (
-                        <DropdownMenuItem
-                          className="text-green-600 focus:text-green-600 dark:text-green-500 dark:focus:text-green-500"
-                          onClick={() => handleSettleUp(expense.id)}
-                          disabled={settlingExpense === expense.id}
-                        >
-                          {settlingExpense === expense.id ? (
-                            <div className="flex items-center gap-2">
-                              <Loader2 className="h-4 w-4 animate-spin" />
-                              Settling...
-                            </div>
-                          ) : (
-                            <>
-                              <CheckCircle className="mr-2 h-4 w-4" />
-                              Settle Up
-                            </>
-                          )}
-                        </DropdownMenuItem>
-                      )}
                       <DropdownMenuItem
                         className="text-red-600 focus:text-red-600 dark:text-red-500 dark:focus:text-red-500"
                         onClick={() => setExpenseToDelete(expense.id)}

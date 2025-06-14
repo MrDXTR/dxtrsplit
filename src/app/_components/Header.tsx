@@ -42,7 +42,7 @@ export function Header() {
 
         <nav className="flex items-center gap-6">
           {status === "loading" ? (
-            <div className="h-10 w-24 animate-pulse rounded-lg dark:bg-gray-700 bg-gray-200" />
+            <div className="h-10 w-24 animate-pulse rounded-lg bg-gray-200 dark:bg-gray-700" />
           ) : session ? (
             <div className="flex items-center gap-4">
               <Link href="/groups">

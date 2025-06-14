@@ -65,7 +65,7 @@ export const expenseRouter = createTRPCRouter({
       });
       return expense;
     }),
-    
+
   // New endpoint to settle a specific transaction
   settleTransaction: protectedProcedure
     .input(
@@ -99,13 +99,14 @@ export const expenseRouter = createTRPCRouter({
       }
 
       // Find the people involved in the transaction
-      const fromPerson = group.people.find(p => p.name === input.fromName);
-      const toPerson = group.people.find(p => p.name === input.toName);
+      const fromPerson = group.people.find((p) => p.name === input.fromName);
+      const toPerson = group.people.find((p) => p.name === input.toName);
 
       if (!fromPerson || !toPerson) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: "One or both people involved in the transaction were not found",
+          message:
+            "One or both people involved in the transaction were not found",
         });
       }
 

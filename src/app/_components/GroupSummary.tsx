@@ -55,10 +55,10 @@ interface GroupSummaryProps {
   setShowMembersDialog?: (show: boolean) => void;
 }
 
-export function GroupSummary({ 
-  group, 
+export function GroupSummary({
+  group,
   onExpenseCreated,
-  setShowMembersDialog 
+  setShowMembersDialog,
 }: GroupSummaryProps) {
   const [expenseToDelete, setExpenseToDelete] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -279,6 +279,7 @@ export function GroupSummary({
               balances={mappedBalances}
               isLoading={isLoadingBalances}
               hasUnsettledExpenses={hasUnsettledExpenses}
+              groupId={group.id}
             />
           </div>
         </div>

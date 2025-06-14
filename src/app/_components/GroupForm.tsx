@@ -86,7 +86,7 @@ export function GroupForm({ onClose, onSuccess }: GroupFormProps) {
               <div className="rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 p-2">
                 <Plus className="h-6 w-6 text-white" />
               </div>
-              <span className="bg-gradient-to-r dark:text-white from-green-600 to-emerald-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent dark:text-white">
                 Create New Group
               </span>
             </CardTitle>

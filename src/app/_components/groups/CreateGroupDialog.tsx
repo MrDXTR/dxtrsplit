@@ -85,7 +85,7 @@ export function CreateGroupDialog() {
     >
       <DialogTrigger asChild>
         <Button
-          className="w-full dark:text-white bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg transition-all duration-200 hover:from-blue-700 hover:to-purple-700 hover:shadow-xl sm:w-auto"
+          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg transition-all duration-200 hover:from-blue-700 hover:to-purple-700 hover:shadow-xl sm:w-auto dark:text-white"
           size="lg"
         >
           <Plus className="mr-2 h-4 w-4" />
